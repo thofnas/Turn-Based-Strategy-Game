@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
-public class UnitActionSystem : MonoBehaviour
+public class UnitActionSystem : Singleton<UnitActionSystem>
 {
+    public event EventHandler OnSelectedUnitChanged;
+    
     [SerializeField] private Unit _selectedUnit;
     [SerializeField] private LayerMask _unitLayerMask;
     
@@ -11,7 +14,7 @@ public class UnitActionSystem : MonoBehaviour
         {
             if (TryHandleUnitSelection()) return;
 
-            _selectedUnit.Move(MouseWorld.GetPosition());
+            GetSelectedUnit().Move(MouseWorld.GetPosition());
         }
     }
 
@@ -25,7 +28,15 @@ public class UnitActionSystem : MonoBehaviour
         if (!raycastHit.transform.TryGetComponent(out Unit unit))
             return false;
         
-        _selectedUnit = unit;
+        SetSelectedUnit(unit);
         return true;
     }
+
+    private void SetSelectedUnit(Unit unit)
+    {
+        _selectedUnit = unit;
+        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public Unit GetSelectedUnit() => _selectedUnit;
 }
