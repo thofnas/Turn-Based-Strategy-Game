@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -5,17 +6,19 @@ public class Unit : MonoBehaviour
     private const float TOLERANCE = 0.1f;
     private const float MOVE_SPEED = 4f;
     private const float ROTATE_SPEED = 10f;
-
-    [SerializeField] private Animator _unitAnimator;
-    
-    private Vector3 _targetPosition;
     
     private static readonly int IsWalking = Animator.StringToHash(nameof(IsWalking));
 
+    [SerializeField] private Animator _unitAnimator;
+    private Vector3 _targetPosition;
+    
+    private void Awake()
+    {
+        _targetPosition = transform.position;
+    }
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-            Move(MouseWorld.GetPosition());
         
         if (Vector3.Distance(transform.position, _targetPosition) <= TOLERANCE)
         {
@@ -31,7 +34,7 @@ public class Unit : MonoBehaviour
         _unitAnimator.SetBool(IsWalking, true);
     }
 
-    private void Move(Vector3 targetPosition)
+    public void Move(Vector3 targetPosition)
     {
         _targetPosition = targetPosition;
     }
