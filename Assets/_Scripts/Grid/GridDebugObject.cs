@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ namespace Grid
 {
     public class GridDebugObject : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _coordsText;
+        [SerializeField] private TextMeshPro _coordsText;
         private GridObject _gridObject;
         
         public void SetGridObject(GridObject gridObject)
