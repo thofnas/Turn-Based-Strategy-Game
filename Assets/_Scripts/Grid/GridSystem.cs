@@ -28,7 +28,7 @@ namespace Grid
         }
 
         public Vector3 GetWorldPosition(GridPosition gridPosition) =>
-            new Vector3(gridPosition.X, 0, gridPosition.Z) * _cellSize;
+            new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
 
         public GridPosition GetGridPosition(Vector3 worldPosition) => new(
             Mathf.RoundToInt(worldPosition.x / _cellSize),
@@ -50,6 +50,14 @@ namespace Grid
         }
 
         public GridObject GetGridObject(GridPosition gridPosition) => 
-            _gridObjectArray[gridPosition.X, gridPosition.Z];
+            _gridObjectArray[gridPosition.x, gridPosition.z];
+
+        public bool IsValidGridPosition(GridPosition gridPosition)
+        {
+            return gridPosition.x >= 0 &&
+                   gridPosition.z >= 0 &&
+                   gridPosition.x < _width &&
+                   gridPosition.z < _height;
+        }
     }
 }

@@ -1,22 +1,25 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Grid
 {
     public readonly struct GridPosition : IEquatable<GridPosition>
     {
-        public readonly int X;
-        public readonly int Z;
+        [SuppressMessage("ReSharper", "InconsistentNaming")] 
+        public readonly int x;
+        [SuppressMessage("ReSharper", "InconsistentNaming")] 
+        public readonly int z;
 
         public GridPosition(int x, int z)
         {
-            X = x;
-            Z = z;
+            this.x = x;
+            this.z = z;
         }
 
-        public override string ToString() => $"x: {X}; z: {Z}";
+        public override string ToString() => $"x: {x}; z: {z}";
 
         #region Operators
-        public static bool operator ==(GridPosition a, GridPosition b) => a.X == b.X && a.Z == b.Z;
+        public static bool operator ==(GridPosition a, GridPosition b) => a.x == b.x && a.z == b.z;
 
         public static bool operator !=(GridPosition a, GridPosition b) => !(a == b);
         
@@ -24,7 +27,11 @@ namespace Grid
         
         public override bool Equals(object obj) => obj is GridPosition other && Equals(other);
         
-        public override int GetHashCode() => HashCode.Combine(X, Z);
+        public override int GetHashCode() => HashCode.Combine(x, z);
+
+        public static GridPosition operator +(GridPosition a, GridPosition b) => new(a.x + b.x, a.z + b.z);
+        
+        public static GridPosition operator -(GridPosition a, GridPosition b) => new(a.x - b.x, a.z - b.z);
         #endregion
     }
 }

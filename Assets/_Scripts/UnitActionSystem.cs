@@ -1,4 +1,5 @@
 using System;
+using Grid;
 using UnityEngine;
 
 public class UnitActionSystem : Singleton<UnitActionSystem>
@@ -14,7 +15,11 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
         {
             if (TryHandleUnitSelection()) return;
 
-            GetSelectedUnit().Move(MouseWorld.GetPosition());
+            GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+            
+            if (!GetSelectedUnit().GetMoveAction().IsValidActionGridPosition(mouseGridPosition)) return;
+            
+            GetSelectedUnit().GetMoveAction().Move(mouseGridPosition);
         }
     }
 
