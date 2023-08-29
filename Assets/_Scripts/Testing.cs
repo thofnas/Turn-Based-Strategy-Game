@@ -1,3 +1,4 @@
+using Grid;
 using UnityEngine;
 
 public class Testing : MonoBehaviour
@@ -6,12 +7,13 @@ public class Testing : MonoBehaviour
     
     private void Start()
     {
+        GridSystemVisual.Instance.HideAllGridPositions();
     }
 
     private void Update()
     {
         if (!Input.GetKeyDown(KeyCode.T)) return;
+        
 
-        _unit.GetMoveAction().GetValidActionGridPositionList();
     }
 }
