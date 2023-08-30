@@ -8,18 +8,30 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
     
     [SerializeField] private Unit _selectedUnit;
     [SerializeField] private LayerMask _unitLayerMask;
+    private bool _isBusy;
     
     private void Update()
     {
+        if (_isBusy) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             if (TryHandleUnitSelection()) return;
 
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
             
-            if (!GetSelectedUnit().GetMoveAction().IsValidActionGridPosition(mouseGridPosition)) return;
+            if (!_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition)) return;
             
-            GetSelectedUnit().GetMoveAction().Move(mouseGridPosition);
+            SetBusy();
+
+            _selectedUnit.GetMoveAction().Move(mouseGridPosition, UnsetBusy);
+        }
+        
+        if (Input.GetMouseButtonDown(1))
+        {
+            SetBusy();
+            
+            _selectedUnit.GetSpinAction().Spin(UnsetBusy);
         }
     }
 
@@ -44,4 +56,8 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
     }
 
     public Unit GetSelectedUnit() => _selectedUnit;
+
+    private void SetBusy() => _isBusy = true;
+    
+    private void UnsetBusy() => _isBusy = false;
 }

@@ -908,7 +908,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unit: {fileID: 2113613398}
-  _gridSystemVisual: {fileID: 1202233389}
 --- !u!4 &1128664014
 Transform:
   m_ObjectHideFlags: 0
@@ -1014,7 +1013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 629209f2628ebc8488142587ac49f045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSystemVisualSinglePrefab: {fileID: 2392379640156987148, guid: 991b9ff85adb0bf48b6e1739d7d46cb6, type: 3}
+  _gridSystemVisualSinglePrefab: {fileID: 5099142477036531230, guid: 991b9ff85adb0bf48b6e1739d7d46cb6, type: 3}
 --- !u!23 &1202233390
 MeshRenderer:
   m_ObjectHideFlags: 0

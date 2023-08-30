@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ namespace Grid
 {
     public class GridSystemVisual : Singleton<GridSystemVisual>
     {
-        [SerializeField] private Transform _gridSystemVisualSinglePrefab;
+        [SerializeField] private GridSystemVisualSingle _gridSystemVisualSinglePrefab;
 
         private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
 
@@ -21,11 +20,11 @@ namespace Grid
             {
                 for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
                 {
-                    Transform singleVisualTransform = Instantiate(_gridSystemVisualSinglePrefab,
+                    GridSystemVisualSingle singleVisualTransform = Instantiate(_gridSystemVisualSinglePrefab,
                         LevelGrid.Instance.GetWorldPosition(new GridPosition(x, z)),
                         Quaternion.identity);
 
-                    _gridSystemVisualSingleArray[x, z] = singleVisualTransform.GetComponent<GridSystemVisualSingle>();
+                    _gridSystemVisualSingleArray[x, z] = singleVisualTransform;
                 }
             }
         }
@@ -40,7 +39,7 @@ namespace Grid
             foreach (GridSystemVisualSingle gridSystemVisualSingle in _gridSystemVisualSingleArray)
             {
                 gridSystemVisualSingle.Hide();
-            }
+            }  
         }
         
         public void ShowGridPositionList(List<GridPosition> gridPositions)
