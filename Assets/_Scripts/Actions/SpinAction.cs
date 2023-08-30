@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Grid;
 using UnityEngine;
 
 namespace Actions
@@ -8,7 +10,7 @@ namespace Actions
     {
         private readonly float _spinDegrees = 720f;
     
-        public void Spin(Action onSpinComplete)
+        public override void DoAction(GridPosition gridPosition, Action onSpinComplete)
         {
             if (IsActive) return;
 
@@ -36,5 +38,9 @@ namespace Actions
 
             OnActionComplete();
         }
+
+        public override List<GridPosition> GetValidActionGridPositionList() => new() { Unit.GetGridPosition() };
+
+        public override string GetActionName() => "Spin";
     }
 }

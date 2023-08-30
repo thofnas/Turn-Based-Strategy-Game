@@ -3336,7 +3336,8 @@ MonoBehaviour:
         isBuiltIn: 0
         script: {fileID: 11500000, guid: 396ff274dda3d5d4f9f4e91fb4a7d940, type: 3}
       - displayName: MoveAction
-        name: MoveAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        name: Actions.MoveAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
         content:
           m_Text: MoveAction
           m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
@@ -3382,6 +3383,36 @@ MonoBehaviour:
         shown: 0
         isBuiltIn: 0
         script: {fileID: 11500000, guid: b3d9ba8682afc2148bd873235b635a72, type: 3}
+      - displayName: GridSystemVisual
+        name: Grid.GridSystemVisual, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: GridSystemVisual
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: GridSystemVisual
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 629209f2628ebc8488142587ac49f045, type: 3}
+      - displayName: SpinAction
+        name: Actions.SpinAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: SpinAction
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: SpinAction
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 7c11c3294cf05b04a8c289589e8e4cc9, type: 3}
+      - displayName: GridSystemVisualSingle
+        name: Grid.GridSystemVisualSingle, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: GridSystemVisualSingle
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: GridSystemVisualSingle
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: bdcd19df132ebd84fb37d248211f16ca, type: 3}
     excludedComponents:
       name: Excluded
       components:
@@ -5682,7 +5713,7 @@ MonoBehaviour:
           m_Text: Transform
           m_Image: {fileID: 148978298399363526, guid: 0000000000000000d000000000000000, type: 0}
           m_Tooltip: Transform
-        shown: 0
+        shown: 1
         isBuiltIn: 1
         script: {fileID: 0}
       - displayName: Tree

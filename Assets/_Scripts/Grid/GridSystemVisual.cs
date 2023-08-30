@@ -50,7 +50,7 @@ namespace Grid
         private void UpdateGridVisual()
         {
             HideAllGridPositions();
-            ShowGridPositionList(UnitActionSystem.Instance.GetSelectedUnit().GetMoveAction().GetValidActionGridPositionList());
+            ShowGridPositionList(UnitActionSystem.Instance.GetSelectedAction().GetValidActionGridPositionList());
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Actions
             _unitAnimator.SetBool(IsWalking, true);
         }
     
-        public void Move(GridPosition gridPosition, Action onCompleteAction)
+        public override void DoAction(GridPosition gridPosition, Action onCompleteAction)
         {
             IsActive = true;
 
@@ -53,10 +53,7 @@ namespace Actions
             _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         }
 
-        public bool IsValidActionGridPosition(GridPosition gridPosition) => 
-            GetValidActionGridPositionList().Contains(gridPosition);
-
-        public List<GridPosition> GetValidActionGridPositionList()
+        public override List<GridPosition> GetValidActionGridPositionList()
         {
             List<GridPosition> validGridPositionList = new();
 
@@ -84,5 +81,7 @@ namespace Actions
         
             return validGridPositionList;
         }
+        
+        public override string GetActionName() => "Move";
     }
 }
