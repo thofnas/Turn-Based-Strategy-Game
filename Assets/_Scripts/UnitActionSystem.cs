@@ -8,12 +8,13 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
 {
     public event EventHandler OnSelectedUnitChanged;
     public event EventHandler OnSelectedActionChanged;
+    public event EventHandler<bool> OnBusyStateChanged;
     
     [SerializeField] private Unit _selectedUnit;
     [SerializeField] private LayerMask _unitLayerMask;
     private BaseAction _selectedAction;
     private bool _isBusy;
-
+    
     private void Start()
     {
         SetSelectedUnit(_selectedUnit);
@@ -79,9 +80,17 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
 
     public Unit GetSelectedUnit() => _selectedUnit;
 
-    private void SetBusy() => _isBusy = true;
-    
-    private void UnsetBusy() => _isBusy = false;
+    private void SetBusy()
+    {
+        _isBusy = true;
+        OnBusyStateChanged?.Invoke(this, _isBusy);
+    }
+
+    private void UnsetBusy()
+    {
+        _isBusy = false;
+        OnBusyStateChanged?.Invoke(this, _isBusy);
+    }
 
     public BaseAction GetSelectedAction() => _selectedAction;
 }

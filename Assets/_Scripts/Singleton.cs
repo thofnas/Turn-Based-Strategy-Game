@@ -12,5 +12,6 @@ public abstract class Singleton <T> : MonoBehaviour where T : Singleton<T>
 
         Instance = this as T;
         transform.SetParent(null);
+        DontDestroyOnLoad(this);
     }
 }

@@ -7,7 +7,6 @@ public class UnitActionSystemUI : MonoBehaviour
 {
     [SerializeField] private Transform _actionButtonContainerTransform;
     [SerializeField] private ActionButtonUI _actionButtonPrefab;
-    private List<ActionButtonUI> _actionButtons;
 
     private void Start()
     {
@@ -37,15 +36,14 @@ public class UnitActionSystemUI : MonoBehaviour
         {
             ActionButtonUI button = Instantiate(_actionButtonPrefab, _actionButtonContainerTransform);
             button.SetAction(action);
-            _actionButtons.Add(button);
         }
     }
 
     private void UpdateSelectedVisual()
     {
-        foreach (ActionButtonUI actionButton in _actionButtons)
+        foreach (Transform actionButton in _actionButtonContainerTransform)
         {
-            actionButton.UpdateSelectedVisual();
+            actionButton.GetComponent<ActionButtonUI>().UpdateSelectedVisual();
         }
     }
 
@@ -58,6 +56,5 @@ public class UnitActionSystemUI : MonoBehaviour
     private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e)
     {
         UpdateSelectedVisual();
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using Actions;
+﻿using System;
+using Actions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,16 @@ public class ActionButtonUI : MonoBehaviour
     [SerializeField] private Image _selectedBorderImage;
     private BaseAction _action;
 
+    private void Start()
+    {
+        UnitActionSystem.Instance.OnBusyStateChanged += UnitActionSystem_OnBusyStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        UnitActionSystem.Instance.OnBusyStateChanged -= UnitActionSystem_OnBusyStateChanged;
+    }
+    
     public void SetAction(BaseAction action)
     {
         _action = action;
@@ -24,5 +35,10 @@ public class ActionButtonUI : MonoBehaviour
     public void UpdateSelectedVisual()
     {
         _selectedBorderImage.gameObject.SetActive(_action == UnitActionSystem.Instance.GetSelectedAction());
+    }
+    
+    private void UnitActionSystem_OnBusyStateChanged(object sender, bool isBusy)
+    {
+        _button.interactable = !isBusy;
     }
 }
