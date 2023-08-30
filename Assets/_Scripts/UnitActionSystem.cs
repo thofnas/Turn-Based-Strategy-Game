@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class UnitActionSystem : Singleton<UnitActionSystem>
 {
     public event EventHandler OnSelectedUnitChanged;
+    public event EventHandler OnSelectedActionChanged;
     
     [SerializeField] private Unit _selectedUnit;
     [SerializeField] private LayerMask _unitLayerMask;
@@ -69,7 +70,12 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetSelectedAction(BaseAction action) => _selectedAction = action;
+    public void SetSelectedAction(BaseAction action)
+    {
+        _selectedAction = action;
+        
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
+    }
 
     public Unit GetSelectedUnit() => _selectedUnit;
 
