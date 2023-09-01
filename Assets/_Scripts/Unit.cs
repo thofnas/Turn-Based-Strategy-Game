@@ -87,4 +87,11 @@ public class Unit : MonoBehaviour
         
         OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    public void Damage()
+    {
+        print(transform + " damaged");
+    }
+
+    public Vector3 GetWorldPosition() => transform.position;
 }

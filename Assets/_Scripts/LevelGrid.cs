@@ -12,7 +12,7 @@ public class LevelGrid : Singleton<LevelGrid>
     {
         base.Awake();
         
-        _gridSystem = new GridSystem(10, 10);
+        _gridSystem = new GridSystem(20, 20);
         _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
     }
 
@@ -35,6 +35,8 @@ public class LevelGrid : Singleton<LevelGrid>
     public bool IsValidGridPosition(GridPosition gridPosition) => _gridSystem.IsValidGridPosition(gridPosition);
 
     public bool HasAnyUnitOnGridPosition(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition).HasAnyUnit();
+    
+    public Unit GetUnitAtGridPosition(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition).GetUnit();
     
     public int GetWidth() => _gridSystem.GetWidth();
 

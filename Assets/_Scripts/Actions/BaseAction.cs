@@ -7,10 +7,11 @@ namespace Actions
 {
     public abstract class BaseAction : MonoBehaviour
     {
-        protected Action OnActionComplete;
         protected Unit Unit;
         protected bool IsActive;
         
+        private Action _onActionComplete;
+
         protected virtual void Awake()
         {
             Unit = GetComponent<Unit>();
@@ -26,5 +27,17 @@ namespace Actions
         public abstract List<GridPosition> GetValidActionGridPositionList();
         
         public virtual int GetActionPointsCost() => 1;
+
+        protected void ActionStart(Action onActionComplete)
+        {
+            IsActive = true;
+            _onActionComplete = onActionComplete;
+        }
+
+        protected void ActionComplete()
+        {
+            IsActive = false;
+            _onActionComplete();
+        }
     }
 }

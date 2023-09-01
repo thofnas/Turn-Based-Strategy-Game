@@ -22,7 +22,9 @@ namespace Grid
         public void RemoveUnit(Unit unit) => _unitsList.Remove(unit);
 
         public bool HasAnyUnit() => _unitsList.Count > 0;
-        
+
+        public Unit GetUnit() => HasAnyUnit() ? _unitsList[0] : null;
+
         public override string ToString()
         {
             string unitsString = "";

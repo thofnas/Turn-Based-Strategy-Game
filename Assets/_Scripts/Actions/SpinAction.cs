@@ -14,7 +14,7 @@ namespace Actions
         {
             if (IsActive) return;
 
-            OnActionComplete = onSpinComplete;
+            ActionStart(onSpinComplete);
             
             StartCoroutine(SpinRoutine());
         }
@@ -34,9 +34,7 @@ namespace Actions
                 yield return null;
             }
         
-            IsActive = false;
-
-            OnActionComplete();
+            ActionComplete();
         }
 
         public override List<GridPosition> GetValidActionGridPositionList() => new() { Unit.GetGridPosition() };

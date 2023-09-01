@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    private float timer;
+    private float _timer;
 
     private void Start()
     {
@@ -15,15 +15,15 @@ public class EnemyAI : MonoBehaviour
         if (TurnSystem.Instance.IsPlayerTurn()) 
             return;
 
-        timer -= Time.deltaTime;
+        _timer -= Time.deltaTime;
 
-        if (timer > 0f) return;
+        if (_timer > 0f) return;
         
         TurnSystem.Instance.NextTurn();
     }
     
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
-        timer = 2f;
+        _timer = 2f;
     }
 }

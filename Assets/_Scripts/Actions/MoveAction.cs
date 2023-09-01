@@ -31,9 +31,11 @@ namespace Actions
             if (Vector3.Distance(transform.position, _targetPosition) <= TOLERANCE)
             {
                 transform.position = _targetPosition;
+                
                 _unitAnimator.SetBool(IsWalking, false);
-                IsActive = false;
-                OnActionComplete();
+                
+                ActionComplete();
+                
                 return;
             }
 
@@ -44,12 +46,10 @@ namespace Actions
             _unitAnimator.SetBool(IsWalking, true);
         }
     
-        public override void DoAction(GridPosition gridPosition, Action onCompleteAction)
+        public override void DoAction(GridPosition gridPosition, Action onActionComplete)
         {
-            IsActive = true;
+            ActionStart(onActionComplete);
 
-            OnActionComplete = onCompleteAction;
-            
             _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         }
 
