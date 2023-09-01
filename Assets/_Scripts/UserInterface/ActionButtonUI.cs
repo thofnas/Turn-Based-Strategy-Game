@@ -1,4 +1,5 @@
-﻿using Actions;
+﻿using System;
+using Actions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,11 +16,13 @@ namespace UserInterface
         private void Start()
         {
             UnitActionSystem.Instance.OnBusyStateChanged += UnitActionSystem_OnBusyStateChanged;
+            TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         }
 
         private void OnDestroy()
         {
             UnitActionSystem.Instance.OnBusyStateChanged -= UnitActionSystem_OnBusyStateChanged;
+            TurnSystem.Instance.OnTurnChanged -= TurnSystem_OnTurnChanged;
         }
     
         public void SetAction(BaseAction action)
@@ -40,7 +43,12 @@ namespace UserInterface
     
         private void UnitActionSystem_OnBusyStateChanged(object sender, bool isBusy)
         {
-            _button.interactable = !isBusy;
+            _button.interactable = !isBusy && TurnSystem.Instance.IsPlayerTurn();
+        }
+        
+        private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+        {
+            _button.interactable = !UnitActionSystem.Instance.IsBusy() && TurnSystem.Instance.IsPlayerTurn();
         }
     }
 }

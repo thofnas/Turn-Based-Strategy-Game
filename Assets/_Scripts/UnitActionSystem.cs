@@ -23,11 +23,17 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
 
     private void Update()
     {
-        if (_isBusy) return;
+        if (_isBusy) 
+            return;
+
+        if (!TurnSystem.Instance.IsPlayerTurn()) 
+            return;
         
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         
-        if (TryHandleUnitSelection()) return;
+        if (TryHandleUnitSelection()) 
+            return;
         
         HandleSelectedAction();
     }
@@ -57,6 +63,9 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
             return false;
 
         if (!raycastHit.transform.TryGetComponent(out Unit unit))
+            return false;
+
+        if (unit.IsEnemy()) 
             return false;
 
         if (unit == _selectedUnit) 
@@ -97,4 +106,6 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
     }
 
     public BaseAction GetSelectedAction() => _selectedAction;
+
+    public bool IsBusy() => _isBusy;
 }
