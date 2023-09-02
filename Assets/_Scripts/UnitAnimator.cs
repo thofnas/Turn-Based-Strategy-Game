@@ -8,6 +8,8 @@ public class UnitAnimator : MonoBehaviour
     private static readonly int Shoot = Animator.StringToHash(nameof(Shoot));
 
     [SerializeField] private Animator _animator;
+    [SerializeField] private BulletProjectile _bulletProjectilePrefab;
+    [SerializeField] private Transform _rifleShootPointTransform;
 
     private void Awake()
     {
@@ -29,6 +31,15 @@ public class UnitAnimator : MonoBehaviour
     private void MoveAction_OnUnitStopMoving(object sender, EventArgs e) => 
         _animator.SetBool(IsWalking, false);
     
-    private void ShootAction_OnUnitShoot(object sender, EventArgs e) => 
+    private void ShootAction_OnUnitShoot(object sender, ShootAction.OnUnitShootEventArgs e)
+    {
         _animator.SetTrigger(Shoot);
+
+        BulletProjectile bulletProjectile = 
+            Instantiate(_bulletProjectilePrefab, _rifleShootPointTransform.position, Quaternion.identity);
+        Vector3 targetUnitShootAtPosition = e.TargetUnit.GetWorldPosition();
+        targetUnitShootAtPosition.y = _rifleShootPointTransform.position.y;
+        
+        bulletProjectile.Setup(targetUnitShootAtPosition);
+    }
 }
