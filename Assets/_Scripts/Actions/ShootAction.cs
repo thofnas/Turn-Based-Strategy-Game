@@ -9,11 +9,12 @@ public class ShootAction : BaseAction
     private const int MAX_SHOOT_DISTANCE = 5;
     private const float ROTATE_SPEED = 10f;
 
-    private State _state;
+    public event EventHandler OnUnitShoot;
+    
+    private readonly float _aimingStateTime = 1.0f;
+    private readonly float _shootingStateTime = 0.1f;
+    private readonly float _cooloffStateTime = 0.1f;private State _state;
     private float _stateTimer;
-    float _aimingStateTime = 1.0f;
-    float _shootingStateTime = 0.1f;
-    float _cooloffStateTime = 0.1f;
     private Unit _targetUnit;
     private bool _canShoot;
 
@@ -44,6 +45,8 @@ public class ShootAction : BaseAction
     private void Shoot()
     {
         _targetUnit.Damage();
+        
+        OnUnitShoot?.Invoke(this, EventArgs.Empty);
     }
     
     private void NextState()

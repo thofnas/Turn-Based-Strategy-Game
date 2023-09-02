@@ -10,11 +10,11 @@ namespace Actions
         private const float TOLERANCE = 0.1f;
         private const float MOVE_SPEED = 4f;
         private const float ROTATE_SPEED = 10f;
-        
-        private static readonly int IsWalking = Animator.StringToHash(nameof(IsWalking));
-    
+
+        public event EventHandler OnUnitStartMoving; 
+        public event EventHandler OnUnitStopMoving;
+
         [SerializeField] private int _maxMoveDistance = 4;
-        [SerializeField] private Animator _unitAnimator;
         private Vector3 _targetPosition;
 
         protected override void Awake()
@@ -32,7 +32,7 @@ namespace Actions
             {
                 transform.position = _targetPosition;
                 
-                _unitAnimator.SetBool(IsWalking, false);
+                OnUnitStopMoving?.Invoke(this, EventArgs.Empty);
                 
                 ActionComplete();
                 
@@ -43,7 +43,7 @@ namespace Actions
             transform.position += moveDirection * (Time.deltaTime * MOVE_SPEED);
             transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * ROTATE_SPEED);
         
-            _unitAnimator.SetBool(IsWalking, true);
+            OnUnitStartMoving?.Invoke(this, EventArgs.Empty);
         }
     
         public override void DoAction(GridPosition gridPosition, Action onActionComplete)
