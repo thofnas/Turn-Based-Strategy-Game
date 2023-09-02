@@ -13,10 +13,10 @@ namespace Actions
         public override void DoAction(GridPosition gridPosition, Action onSpinComplete)
         {
             if (IsActive) return;
-
-            ActionStart(onSpinComplete);
             
             StartCoroutine(SpinRoutine());
+            
+            ActionStart(onSpinComplete);
         }
 
         private IEnumerator SpinRoutine()

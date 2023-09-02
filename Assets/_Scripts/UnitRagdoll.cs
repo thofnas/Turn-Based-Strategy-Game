@@ -11,7 +11,6 @@ public class UnitRagdoll : MonoBehaviour
 
         float offset = 0.5f;
         Vector3 explosionPosition = (damageDealerPosition - transform.position).normalized * offset + transform.position;
-        print(damageDealerPosition);
         
         ApplyExplosionForce(_ragdollRootBone, 400f, explosionPosition, 10f);
     }
@@ -36,12 +35,8 @@ public class UnitRagdoll : MonoBehaviour
         foreach (Transform child in root)
         {
             if (child.TryGetComponent(out Rigidbody childRb))
-            {
-                print("force fart");
                 childRb.AddExplosionForce(explosionForce, explosionPosition, explosionRange);
-            }
-
-
+            
             ApplyExplosionForce(child, explosionForce, explosionPosition, explosionRange);
         }
     }

@@ -7,6 +7,9 @@ namespace Actions
 {
     public abstract class BaseAction : MonoBehaviour
     {
+        public static event EventHandler OnAnyActionStarted;
+        public static event EventHandler OnAnyActionCompleted;
+        
         protected Unit Unit;
         protected bool IsActive;
         
@@ -28,16 +31,22 @@ namespace Actions
         
         public virtual int GetActionPointsCost() => 1;
 
+        public Unit GetUnit() => Unit;
+
         protected void ActionStart(Action onActionComplete)
         {
             IsActive = true;
             _onActionComplete = onActionComplete;
+            
+            OnAnyActionStarted?.Invoke(this, EventArgs.Empty);
         }
 
         protected void ActionComplete()
         {
             IsActive = false;
             _onActionComplete();
+            
+            OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -48,9 +48,9 @@ namespace Actions
     
         public override void DoAction(GridPosition gridPosition, Action onActionComplete)
         {
-            ActionStart(onActionComplete);
-
             _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+            
+            ActionStart(onActionComplete);
         }
 
         public override List<GridPosition> GetValidActionGridPositionList()

@@ -19,7 +19,7 @@ public class ShootAction : BaseAction
     
     private readonly float _aimingStateTime = 1.0f;
     private readonly float _shootingStateTime = 0.1f;
-    private readonly float _cooloffStateTime = 0.1f;
+    private readonly float _cooloffStateTime = 0.5f;
     private State _state;
     private float _stateTimer;
     private Unit _targetUnit;
@@ -48,43 +48,15 @@ public class ShootAction : BaseAction
 
         if (_stateTimer <= 0f) NextState();
     }
-    
-    private void Shoot()
-    {
-        _targetUnit.Damage(40, Unit.transform.position);
-        
-        OnUnitShoot?.Invoke(this, new OnUnitShootEventArgs {
-            ShootingUnit = Unit,
-            TargetUnit = _targetUnit
-        });
-    }
-    
-    private void NextState()
-    {
-        switch (_state)
-        {
-            case State.Aiming:
-                _state = State.Shooting;
-                _stateTimer = _shootingStateTime;
-                break;
-            case State.Shooting:
-                _state = State.Cooloff;
-                _stateTimer = _cooloffStateTime;
-                break;
-            case State.Cooloff:
-                ActionComplete();
-                break;
-        }
-    }
 
     public override void DoAction(GridPosition gridPosition, Action onActionComplete)
     {
-        ActionStart(onActionComplete);
-        
         _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
         _canShoot = true;
         _state = State.Aiming;
         _stateTimer = _aimingStateTime;
+     
+        ActionStart(onActionComplete);
     }
 
     public override List<GridPosition> GetValidActionGridPositionList()
@@ -125,8 +97,38 @@ public class ShootAction : BaseAction
         
         return validGridPositionList;
     }
+
+    public Unit GetTargetUnit() => _targetUnit;
     
     public override string GetActionName() => "Shoot";
+    
+    private void Shoot()
+    {
+        _targetUnit.Damage(40, Unit.transform.position);
+        
+        OnUnitShoot?.Invoke(this, new OnUnitShootEventArgs {
+            ShootingUnit = Unit,
+            TargetUnit = _targetUnit
+        });
+    }
+    
+    private void NextState()
+    {
+        switch (_state)
+        {
+            case State.Aiming:
+                _state = State.Shooting;
+                _stateTimer = _shootingStateTime;
+                break;
+            case State.Shooting:
+                _state = State.Cooloff;
+                _stateTimer = _cooloffStateTime;
+                break;
+            case State.Cooloff:
+                ActionComplete();
+                break;
+        }
+    }
     
     private enum State
     {
