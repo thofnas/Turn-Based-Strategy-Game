@@ -19,7 +19,8 @@ public class ShootAction : BaseAction
     
     private readonly float _aimingStateTime = 1.0f;
     private readonly float _shootingStateTime = 0.1f;
-    private readonly float _cooloffStateTime = 0.1f;private State _state;
+    private readonly float _cooloffStateTime = 0.1f;
+    private State _state;
     private float _stateTimer;
     private Unit _targetUnit;
     private bool _canShoot;
@@ -50,7 +51,7 @@ public class ShootAction : BaseAction
     
     private void Shoot()
     {
-        _targetUnit.Damage();
+        _targetUnit.Damage(40, Unit.transform.position);
         
         OnUnitShoot?.Invoke(this, new OnUnitShootEventArgs {
             ShootingUnit = Unit,
