@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +7,12 @@ namespace Grid
     public class GridSystemVisual : Singleton<GridSystemVisual>
     {
         [SerializeField] private GridSystemVisualSingle _gridSystemVisualSinglePrefab;
-
         private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
+            
             _gridSystemVisualSingleArray = new GridSystemVisualSingle[
                 LevelGrid.Instance.GetWidth(), 
                 LevelGrid.Instance.GetHeight()
@@ -29,9 +31,18 @@ namespace Grid
             }
         }
 
-        private void Update()
+        private void Start()
         {
+            UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged;
+            LevelGrid.Instance.OnAnyUnitChangedGridPosition += LevelGrid_OnAnyUnitChangedGridPosition;
+
             UpdateGridVisual();
+        }
+
+        private void OnDestroy()
+        {
+            UnitActionSystem.Instance.OnSelectedActionChanged -= UnitActionSystem_OnSelectedActionChanged;
+            LevelGrid.Instance.OnAnyUnitChangedGridPosition -= LevelGrid_OnAnyUnitChangedGridPosition;
         }
 
         public void HideAllGridPositions()
@@ -42,15 +53,56 @@ namespace Grid
             }  
         }
         
-        public void ShowGridPositionList(List<GridPosition> gridPositions)
+        public void ShowGridPositionList(List<GridPosition> gridPositions, float alpha = 1)
         {
-            gridPositions.ForEach(gridPosition => _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show());
+            gridPositions.ForEach(gridPosition =>
+            {
+                Color currentActionColor = UnitActionSystem.Instance.GetSelectedAction().GetColorOfVisual();
+                _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show(currentActionColor, alpha);
+            });
         }
 
+        private void ShowGridPositionRange(GridPosition gridPosition, int range)
+        {
+            List<GridPosition> gridPositions = new();
+            
+            for (int x = -range; x < range; x++)
+            {
+                for (int z = -range; z < range; z++)
+                {
+                    GridPosition testGridPosition = gridPosition + new GridPosition(x, z);
+
+                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition)) 
+                        continue;
+                    
+                    float testDistance = Mathf.Sqrt(x * x + z * z);
+
+                    if (Mathf.Floor(testDistance) > range)
+                        continue;
+                    
+                    gridPositions.Add(testGridPosition);
+                }
+            }
+
+            ShowGridPositionList(gridPositions, 0.5f);
+        }
+        
         private void UpdateGridVisual()
         {
             HideAllGridPositions();
+
+            switch (UnitActionSystem.Instance.GetSelectedAction())
+            {
+                case ShootAction shootAction:
+                    ShowGridPositionRange(UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition(),shootAction.GetMaxShootDistance());
+                    break;
+            }
+            
             ShowGridPositionList(UnitActionSystem.Instance.GetSelectedAction().GetValidActionGridPositionList());
         }
+        
+        private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e) => UpdateGridVisual();
+
+        private void LevelGrid_OnAnyUnitChangedGridPosition(object sender, EventArgs e) => UpdateGridVisual();
     }
 }

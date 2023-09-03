@@ -38,6 +38,19 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
         HandleSelectedAction();
     }
 
+    public void SetSelectedAction(BaseAction action)
+    {
+        _selectedAction = action;
+        
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public BaseAction GetSelectedAction() => _selectedAction;
+
+    public bool IsBusy() => _isBusy;
+    
+    public Unit GetSelectedUnit() => _selectedUnit;
+
     private void HandleSelectedAction()
     {
         if (!Input.GetMouseButtonDown(0)) return;
@@ -75,24 +88,6 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
         return true;
     }
 
-    private void SetSelectedUnit(Unit unit)
-    {
-        _selectedUnit = unit;
-        
-        SetSelectedAction(unit.GetMoveAction());
-        
-        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void SetSelectedAction(BaseAction action)
-    {
-        _selectedAction = action;
-        
-        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public Unit GetSelectedUnit() => _selectedUnit;
-
     private void SetBusy()
     {
         _isBusy = true;
@@ -105,7 +100,12 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
         OnBusyStateChanged?.Invoke(this, _isBusy);
     }
 
-    public BaseAction GetSelectedAction() => _selectedAction;
-
-    public bool IsBusy() => _isBusy;
+    private void SetSelectedUnit(Unit unit)
+    {
+        _selectedUnit = unit;
+        
+        SetSelectedAction(unit.GetMoveAction());
+        
+        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
+    }
 }

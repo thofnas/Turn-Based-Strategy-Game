@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using Grid;
 using UnityEngine;
 
 public class LevelGrid : Singleton<LevelGrid>
 {
-    [SerializeField] private Transform _gridDebugObjectPrefab;
+    public event EventHandler OnAnyUnitChangedGridPosition;
     
+    [SerializeField] private Transform _gridDebugObjectPrefab;
     private GridSystem _gridSystem;
 
     protected override void Awake()
@@ -20,6 +22,8 @@ public class LevelGrid : Singleton<LevelGrid>
     {
         ClearUnitAtGridPosition(from, unit);
         AddUnitAtGridPosition(to, unit);
+        
+        OnAnyUnitChangedGridPosition?.Invoke(this, EventArgs.Empty);
     }
     
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit) => _gridSystem.GetGridObject(gridPosition).AddUnit(unit);

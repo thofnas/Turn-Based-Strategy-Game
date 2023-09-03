@@ -12,7 +12,7 @@ public class UnitRagdoll : MonoBehaviour
         float offset = 0.5f;
         Vector3 explosionPosition = (damageDealerPosition - transform.position).normalized * offset + transform.position;
         
-        ApplyExplosionForce(_ragdollRootBone, 400f, explosionPosition, 10f);
+        ApplyExplosionForce(_ragdollRootBone, 500f, explosionPosition, 10f);
     }
 
     private void MathAllChildTransforms(Transform root, Transform clone)

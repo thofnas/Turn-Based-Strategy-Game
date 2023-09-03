@@ -625,6 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57f2d2b788dbc224db0cf200034b3940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _colorOfVisual: {r: 1, g: 0.97701216, b: 0.8349056, a: 1}
   _maxMoveDistance: 4
 --- !u!114 &6628344025876681483
 MonoBehaviour:
@@ -638,6 +639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e2aa7ccecced949ae4150e462b7a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _colorOfVisual: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
 --- !u!114 &1331096069558349557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,6 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c11c3294cf05b04a8c289589e8e4cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _colorOfVisual: {r: 0.9189947, g: 0.754361, b: 0.9811321, a: 1}
 --- !u!114 &698625284713667895
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Grid;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Actions
 {
@@ -12,7 +13,8 @@ namespace Actions
         
         protected Unit Unit;
         protected bool IsActive;
-        
+
+        [SerializeField] private Color _colorOfVisual = Color.white;
         private Action _onActionComplete;
 
         protected virtual void Awake()
@@ -32,6 +34,8 @@ namespace Actions
         public virtual int GetActionPointsCost() => 1;
 
         public Unit GetUnit() => Unit;
+
+        public Color GetColorOfVisual() => _colorOfVisual;
 
         protected void ActionStart(Action onActionComplete)
         {
