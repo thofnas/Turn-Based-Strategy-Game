@@ -1,141 +1,139 @@
 using System;
 using System.Collections.Generic;
-using Actions;
 using Grid;
 using UnityEngine;
 
-public class ShootAction : BaseAction
+namespace Actions
 {
-    private const int MAX_SHOOT_DISTANCE = 5;
-    private const float ROTATE_SPEED = 10f;
-
-    public event EventHandler<OnUnitShootEventArgs> OnUnitShoot;
-    
-    public class OnUnitShootEventArgs : EventArgs
+    public class ShootAction : BaseAction
     {
-        public Unit ShootingUnit;
-        public Unit TargetUnit;
-    }
-    
-    private readonly float _aimingStateTime = 1.0f;
-    private readonly float _shootingStateTime = 0.1f;
-    private readonly float _cooloffStateTime = 0.5f;
-    private State _state;
-    private float _stateTimer;
-    private Unit _targetUnit;
-    private bool _canShoot;
+        private const float ROTATE_SPEED = 10f;
 
-    private void Update()
-    {
-        if (!IsActive) return;
-        
-        _stateTimer -= Time.deltaTime;
-        
-        switch (_state)
+        public event EventHandler<OnUnitShootEventArgs> OnUnitShoot;
+    
+        public class OnUnitShootEventArgs : EventArgs
         {
-            case State.Aiming:
-                Vector3 aimDir = (_targetUnit.GetWorldPosition() - Unit.GetWorldPosition()).normalized;
-                transform.forward = Vector3.Lerp(transform.forward, aimDir, Time.deltaTime * ROTATE_SPEED);
-                break;
-            case State.Shooting:
-                if (!_canShoot) break;
-                _canShoot = false;
-                Shoot();
-                break;
-            case State.Cooloff:
-                break;
+            public Unit ShootingUnit;
+            public Unit TargetUnit;
+        }
+    
+        private readonly float _aimingStateTime = 1.0f;
+        private readonly float _shootingStateTime = 0.1f;
+        private readonly float _cooloffStateTime = 0.5f;
+        private State _state;
+        private float _stateTimer;
+        private Unit _targetUnit;
+        private bool _canShoot;
+
+        private void Update()
+        {
+            if (!IsActive) return;
+        
+            _stateTimer -= Time.deltaTime;
+        
+            switch (_state)
+            {
+                case State.Aiming:
+                    Vector3 aimDir = (_targetUnit.GetWorldPosition() - Unit.GetWorldPosition()).normalized;
+                    transform.forward = Vector3.Lerp(transform.forward, aimDir, Time.deltaTime * ROTATE_SPEED);
+                    break;
+                case State.Shooting:
+                    if (!_canShoot) break;
+                    _canShoot = false;
+                    Shoot();
+                    break;
+                case State.Cooloff:
+                    break;
+            }
+
+            if (_stateTimer <= 0f) NextState();
         }
 
-        if (_stateTimer <= 0f) NextState();
-    }
-
-    public override void DoAction(GridPosition gridPosition, Action onActionComplete)
-    {
-        _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
-        _canShoot = true;
-        _state = State.Aiming;
-        _stateTimer = _aimingStateTime;
-     
-        ActionStart(onActionComplete);
-    }
-
-    public override List<GridPosition> GetValidActionGridPositionList()
-    {
-        List<GridPosition> validGridPositionList = new();
-
-        GridPosition unitGridPosition = Unit.GetGridPosition();
-
-        for (int x = -MAX_SHOOT_DISTANCE; x <= MAX_SHOOT_DISTANCE; x++)
+        public override void DoAction(GridPosition gridPosition, Action onActionComplete)
         {
-            for (int z = -MAX_SHOOT_DISTANCE; z <= MAX_SHOOT_DISTANCE; z++)
+            _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+            _canShoot = true;
+            _state = State.Aiming;
+            _stateTimer = _aimingStateTime;
+     
+            ActionStart(onActionComplete);
+        }
+
+        protected override List<GridPosition> GetGridPositions(bool filterByUnitPresence)
+        {
+            List<GridPosition> validGridPositionList = new();
+            GridPosition unitGridPosition = Unit.GetGridPosition();
+
+            for (int x = -GetMaxDistance(); x <= GetMaxDistance(); x++)
             {
-                GridPosition offsetGridPosition = new(x, z);
-                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+                for (int z = -GetMaxDistance(); z <= GetMaxDistance(); z++)
+                {
+                    GridPosition offsetGridPosition = new(x, z);
+                    GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
-                // if not inside the grid bounds
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition)) 
-                    continue;
+                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                        continue;
 
-                float testDistance = Mathf.Sqrt(x * x + z * z);
+                    float testDistance = Mathf.Sqrt(x * x + z * z);
 
-                if (Mathf.Floor(testDistance) > MAX_SHOOT_DISTANCE)
-                    continue;
-                
-                // if gridPosition is empty
-                if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition)) 
-                    continue;
+                    if (Mathf.Floor(testDistance) > GetMaxDistance())
+                        continue;
 
-                Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
-                
-                // if both units are in the same team
-                if (targetUnit.IsEnemy() == Unit.IsEnemy()) 
-                    continue;
-                
-                validGridPositionList.Add(testGridPosition);
+                    if (filterByUnitPresence)
+                    {
+                        if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                            continue;
+
+                        Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
+
+                        if (targetUnit.IsEnemy() == Unit.IsEnemy())
+                            continue;
+                    }
+
+                    validGridPositionList.Add(testGridPosition);
+                }
+            }
+
+            return validGridPositionList;
+        }
+
+        public Unit GetTargetUnit() => _targetUnit;
+
+        public override string GetActionName() => "Shoot";
+    
+        private void Shoot()
+        {
+            _targetUnit.Damage(40, Unit.transform.position);
+        
+            OnUnitShoot?.Invoke(this, new OnUnitShootEventArgs {
+                ShootingUnit = Unit,
+                TargetUnit = _targetUnit
+            });
+        }
+    
+        private void NextState()
+        {
+            switch (_state)
+            {
+                case State.Aiming:
+                    _state = State.Shooting;
+                    _stateTimer = _shootingStateTime;
+                    break;
+                case State.Shooting:
+                    _state = State.Cooloff;
+                    _stateTimer = _cooloffStateTime;
+                    break;
+                case State.Cooloff:
+                    ActionComplete();
+                    break;
             }
         }
-        
-        return validGridPositionList;
-    }
-
-    public Unit GetTargetUnit() => _targetUnit;
-
-    public int GetMaxShootDistance() => MAX_SHOOT_DISTANCE;
     
-    public override string GetActionName() => "Shoot";
-    
-    private void Shoot()
-    {
-        _targetUnit.Damage(40, Unit.transform.position);
-        
-        OnUnitShoot?.Invoke(this, new OnUnitShootEventArgs {
-            ShootingUnit = Unit,
-            TargetUnit = _targetUnit
-        });
-    }
-    
-    private void NextState()
-    {
-        switch (_state)
+        private enum State
         {
-            case State.Aiming:
-                _state = State.Shooting;
-                _stateTimer = _shootingStateTime;
-                break;
-            case State.Shooting:
-                _state = State.Cooloff;
-                _stateTimer = _cooloffStateTime;
-                break;
-            case State.Cooloff:
-                ActionComplete();
-                break;
+            Aiming,
+            Shooting,
+            Cooloff
         }
-    }
-    
-    private enum State
-    {
-        Aiming,
-        Shooting,
-        Cooloff
     }
 }

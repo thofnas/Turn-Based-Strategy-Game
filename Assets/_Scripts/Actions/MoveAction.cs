@@ -14,7 +14,6 @@ namespace Actions
         public event EventHandler OnUnitStartMoving; 
         public event EventHandler OnUnitStopMoving;
 
-        [SerializeField] private int _maxMoveDistance = 4;
         private Vector3 _targetPosition;
 
         protected override void Awake()
@@ -53,27 +52,30 @@ namespace Actions
             ActionStart(onActionComplete);
         }
 
-        public override List<GridPosition> GetValidActionGridPositionList()
+        protected override List<GridPosition> GetGridPositions(bool filterByUnitPresence)
         {
             List<GridPosition> validGridPositionList = new();
 
             GridPosition unitGridPosition = Unit.GetGridPosition();
 
-            for (int x = -_maxMoveDistance; x <= _maxMoveDistance; x++)
+            for (int x = -GetMaxDistance(); x <= GetMaxDistance(); x++)
             {
-                for (int z = -_maxMoveDistance; z <= _maxMoveDistance; z++)
+                for (int z = -GetMaxDistance(); z <= GetMaxDistance(); z++)
                 {
                     GridPosition offsetGridPosition = new(x, z);
                     GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
 
                     // if not inside the grid bounds
                     if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition)) continue;
+
+                    if (filterByUnitPresence)
+                    {
+                        // if same position as where unit is standing
+                        if (unitGridPosition == testGridPosition) continue;
                 
-                    // if same position as where unit is standing
-                    if (unitGridPosition == testGridPosition) continue;
-                
-                    // if gridPosition already occupied by any unit
-                    if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition)) continue;
+                        // if gridPosition already occupied by any unit
+                        if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition)) continue;
+                    }
                 
                     validGridPositionList.Add(testGridPosition);
                 }

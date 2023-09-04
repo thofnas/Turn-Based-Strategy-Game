@@ -18,6 +18,10 @@ namespace Actions
             
             ActionStart(onSpinComplete);
         }
+        
+        protected override List<GridPosition> GetGridPositions(bool _) => new() { Unit.GetGridPosition() };
+
+        public override string GetActionName() => "Spin";
 
         private IEnumerator SpinRoutine()
         {
@@ -36,9 +40,5 @@ namespace Actions
         
             ActionComplete();
         }
-
-        public override List<GridPosition> GetValidActionGridPositionList() => new() { Unit.GetGridPosition() };
-
-        public override string GetActionName() => "Spin";
     }
 }

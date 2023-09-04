@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Actions;
 using UnityEngine;
 
 namespace Grid
 {
     public class GridSystemVisual : Singleton<GridSystemVisual>
     {
+        private const float RANGE_COLOR_ALPHA = 0.35f;
+        
         [SerializeField] private GridSystemVisualSingle _gridSystemVisualSinglePrefab;
         private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
 
@@ -61,44 +64,17 @@ namespace Grid
                 _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show(currentActionColor, alpha);
             });
         }
-
-        private void ShowGridPositionRange(GridPosition gridPosition, int range)
-        {
-            List<GridPosition> gridPositions = new();
-            
-            for (int x = -range; x < range; x++)
-            {
-                for (int z = -range; z < range; z++)
-                {
-                    GridPosition testGridPosition = gridPosition + new GridPosition(x, z);
-
-                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition)) 
-                        continue;
-                    
-                    float testDistance = Mathf.Sqrt(x * x + z * z);
-
-                    if (Mathf.Floor(testDistance) > range)
-                        continue;
-                    
-                    gridPositions.Add(testGridPosition);
-                }
-            }
-
-            ShowGridPositionList(gridPositions, 0.5f);
-        }
         
         private void UpdateGridVisual()
         {
             HideAllGridPositions();
 
-            switch (UnitActionSystem.Instance.GetSelectedAction())
-            {
-                case ShootAction shootAction:
-                    ShowGridPositionRange(UnitActionSystem.Instance.GetSelectedUnit().GetGridPosition(),shootAction.GetMaxShootDistance());
-                    break;
-            }
-            
-            ShowGridPositionList(UnitActionSystem.Instance.GetSelectedAction().GetValidActionGridPositionList());
+            BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
+
+            if (selectedAction.HasRangeVisual())
+                ShowGridPositionList(selectedAction.GetRangeGridPositionList(), RANGE_COLOR_ALPHA);
+
+            ShowGridPositionList(selectedAction.GetValidActionGridPositionList());
         }
         
         private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e) => UpdateGridVisual();
