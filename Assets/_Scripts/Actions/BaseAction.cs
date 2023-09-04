@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Grid;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Actions
 {
@@ -16,7 +17,7 @@ namespace Actions
         [SerializeField, Min(0)] private int _maxDistance;
         [Header("Visuals")]
         [SerializeField] private Color _color = Color.white;
-        [SerializeField] private bool _showVisual;
+        [SerializeField] private bool _showRange;
         private Action _onActionComplete;
 
         protected virtual void Awake()
@@ -30,10 +31,10 @@ namespace Actions
 
         protected abstract List<GridPosition> GetGridPositions(bool filterByUnitPresence);
         
-        public virtual List<GridPosition> GetValidActionGridPositionList() => 
+        public List<GridPosition> GetValidActionGridPositionList() => 
             GetGridPositions(true);
 
-        public virtual List<GridPosition> GetRangeGridPositionList() => 
+        public List<GridPosition> GetRangeGridPositionList() => 
             GetGridPositions(false);
         
         public virtual bool IsValidActionGridPosition(GridPosition gridPosition) => 
@@ -47,7 +48,7 @@ namespace Actions
         
         public Color GetColorOfVisual() => _color;
 
-        public bool HasRangeVisual() => _showVisual;
+        public bool HasRangeVisual() => _showRange;
 
         protected void ActionStart(Action onActionComplete)
         {

@@ -63,10 +63,11 @@ namespace Actions
         {
             List<GridPosition> validGridPositionList = new();
             GridPosition unitGridPosition = Unit.GetGridPosition();
+            int maxDistance = GetMaxDistance();
 
-            for (int x = -GetMaxDistance(); x <= GetMaxDistance(); x++)
+            for (int x = -maxDistance; x <= maxDistance; x++)
             {
-                for (int z = -GetMaxDistance(); z <= GetMaxDistance(); z++)
+                for (int z = -maxDistance; z <= maxDistance; z++)
                 {
                     GridPosition offsetGridPosition = new(x, z);
                     GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
@@ -76,7 +77,7 @@ namespace Actions
 
                     float testDistance = Mathf.Sqrt(x * x + z * z);
 
-                    if (Mathf.Floor(testDistance) > GetMaxDistance())
+                    if (Mathf.Round(testDistance) > maxDistance)
                         continue;
 
                     if (filterByUnitPresence)

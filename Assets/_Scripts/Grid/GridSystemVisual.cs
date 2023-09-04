@@ -38,14 +38,15 @@ namespace Grid
         {
             UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged;
             LevelGrid.Instance.OnAnyUnitChangedGridPosition += LevelGrid_OnAnyUnitChangedGridPosition;
+            UnitActionSystem.Instance.OnBusyStateChanged += UnitActionSystem_OnBusyStateChanged;
 
             UpdateGridVisual();
         }
-
         private void OnDestroy()
         {
             UnitActionSystem.Instance.OnSelectedActionChanged -= UnitActionSystem_OnSelectedActionChanged;
             LevelGrid.Instance.OnAnyUnitChangedGridPosition -= LevelGrid_OnAnyUnitChangedGridPosition;
+            UnitActionSystem.Instance.OnBusyStateChanged -= UnitActionSystem_OnBusyStateChanged;
         }
 
         public void HideAllGridPositions()
@@ -56,12 +57,15 @@ namespace Grid
             }  
         }
         
-        public void ShowGridPositionList(List<GridPosition> gridPositions, float alpha = 1)
+        public void ShowGridPositionList(List<GridPosition> gridPositions, float alpha = 1f)
         {
             gridPositions.ForEach(gridPosition =>
             {
-                Color currentActionColor = UnitActionSystem.Instance.GetSelectedAction().GetColorOfVisual();
-                _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z].Show(currentActionColor, alpha);
+                Color currentActionColor = UnitActionSystem.Instance.GetSelectedAction()
+                    .GetColorOfVisual();
+
+                _gridSystemVisualSingleArray[gridPosition.x, gridPosition.z]
+                    .Show(currentActionColor, alpha);
             });
         }
         
@@ -80,5 +84,7 @@ namespace Grid
         private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e) => UpdateGridVisual();
 
         private void LevelGrid_OnAnyUnitChangedGridPosition(object sender, EventArgs e) => UpdateGridVisual();
+        
+        private void UnitActionSystem_OnBusyStateChanged(object sender, bool e) => UpdateGridVisual();
     }
 }

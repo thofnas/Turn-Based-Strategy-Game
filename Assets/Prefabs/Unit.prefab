@@ -626,8 +626,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxDistance: 3
-  _color: {r: 0.8708573, g: 0.99215686, b: 0.6039216, a: 1}
-  _showVisual: 0
+  _color: {r: 0.8708573, g: 0.99215686, b: 0.6039216, a: 0}
+  _showRange: 1
 --- !u!114 &6628344025876681483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxDistance: 4
   _color: {r: 0.9716981, g: 0.47209862, b: 0.47209862, a: 1}
-  _showVisual: 1
+  _showRange: 1
 --- !u!114 &1331096069558349557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,7 +657,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxDistance: 0
   _color: {r: 0.5653702, g: 0.6958598, b: 0.990566, a: 1}
-  _showVisual: 0
+  _showRange: 0
 --- !u!114 &698625284713667895
 MonoBehaviour:
   m_ObjectHideFlags: 0

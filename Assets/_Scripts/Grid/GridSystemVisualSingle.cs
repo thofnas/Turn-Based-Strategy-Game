@@ -4,7 +4,7 @@ namespace Grid
 {
     public class GridSystemVisualSingle : MonoBehaviour
     {
-        private static readonly int ColorProp = Shader.PropertyToID("_BaseColor");
+        private static readonly int ColorID = Shader.PropertyToID("_BaseColor");
         
         [SerializeField] private MeshRenderer _meshRenderer;
         private MaterialPropertyBlock _materialPropertyBlock;
@@ -21,7 +21,7 @@ namespace Grid
             color.g -= (1 - alpha) / 3;
             color.b -= (1 - alpha) / 3;
             
-            _materialPropertyBlock.SetColor(ColorProp, color);
+            _materialPropertyBlock.SetColor(ColorID, color);
             _meshRenderer.SetPropertyBlock(_materialPropertyBlock);
             
             _meshRenderer.enabled = true;
