@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Grid;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -29,6 +30,8 @@ namespace Actions
 
         public abstract void DoAction(GridPosition gridPosition, Action onActionComplete);
 
+        public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
+
         protected abstract List<GridPosition> GetGridPositions(bool filterByUnitPresence);
         
         public List<GridPosition> GetValidActionGridPositionList() => 
@@ -50,6 +53,25 @@ namespace Actions
 
         public bool HasRangeVisual() => _showRange;
 
+        public EnemyAIAction GetBestEnemyAIAction()
+        {
+            List<EnemyAIAction> enemyAIActions = new();
+            List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
+
+            foreach (GridPosition gridPosition in validActionGridPositionList)
+            {
+                EnemyAIAction enemyAIAction = GetEnemyAIAction(gridPosition);
+                enemyAIActions.Add(enemyAIAction);
+            }
+
+            if (enemyAIActions.Count <= 0) return null;
+            
+            enemyAIActions.Sort((actionA, actionB) =>
+                actionB.ActionValue - actionA.ActionValue);
+
+            return enemyAIActions.First();
+        }
+        
         protected void ActionStart(Action onActionComplete)
         {
             IsActive = true;

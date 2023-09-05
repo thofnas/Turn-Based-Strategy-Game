@@ -58,8 +58,28 @@ namespace Actions
      
             ActionStart(onActionComplete);
         }
+        
+        public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
+        {
+            Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
 
-        protected override List<GridPosition> GetGridPositions(bool filterByUnitPresence)
+            return new EnemyAIAction { 
+                EnemyGridPosition = gridPosition,
+                ActionValue = 100 + (int)((1 - targetUnit.GetHealthNormalized()) * 100f)
+            };
+        }
+
+        public override string GetActionName() => "Shoot";
+
+        protected override List<GridPosition> GetGridPositions(bool filterByUnitPresence) =>
+            GetGridPositions(filterByUnitPresence, Unit.GetGridPosition());
+
+        public Unit GetTargetUnit() => _targetUnit;
+
+        public int GetTargetCountAtPosition(GridPosition gridPosition) => 
+            GetGridPositions(true, gridPosition).Count;
+
+        private List<GridPosition> GetGridPositions(bool filterByUnitPresence, GridPosition gridPosition)
         {
             List<GridPosition> validGridPositionList = new();
             GridPosition unitGridPosition = Unit.GetGridPosition();
@@ -97,10 +117,6 @@ namespace Actions
 
             return validGridPositionList;
         }
-
-        public Unit GetTargetUnit() => _targetUnit;
-
-        public override string GetActionName() => "Shoot";
     
         private void Shoot()
         {

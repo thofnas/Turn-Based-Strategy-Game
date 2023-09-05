@@ -51,6 +51,12 @@ namespace Actions
             
             ActionStart(onActionComplete);
         }
+        
+        public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
+        {
+            int targetCount = Unit.GetShootAction().GetTargetCountAtPosition(gridPosition);
+            return new EnemyAIAction { EnemyGridPosition = gridPosition, ActionValue = targetCount * 10 };
+        }
 
         protected override List<GridPosition> GetGridPositions(bool filterByUnitPresence)
         {

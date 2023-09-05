@@ -19,6 +19,12 @@ namespace Actions
             ActionStart(onSpinComplete);
         }
         
+        public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition) =>
+            new EnemyAIAction {
+                EnemyGridPosition = gridPosition,
+                ActionValue = 0
+            };
+
         protected override List<GridPosition> GetGridPositions(bool _) => new() { Unit.GetGridPosition() };
 
         public override string GetActionName() => "Spin";
