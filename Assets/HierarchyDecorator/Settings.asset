@@ -3413,6 +3413,99 @@ MonoBehaviour:
         shown: 0
         isBuiltIn: 0
         script: {fileID: 11500000, guid: bdcd19df132ebd84fb37d248211f16ca, type: 3}
+      - displayName: TurnSystem
+        name: TurnSystem, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: TurnSystem
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: TurnSystem
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: d411e468df999fb4185a7c3b71c1e412, type: 3}
+      - displayName: EnemyAI
+        name: EnemyAI, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: EnemyAI
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: EnemyAI
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: d8afeda648103c74489ba63ba3c7fe80, type: 3}
+      - displayName: UnitManager
+        name: UnitManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: UnitManager
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: UnitManager
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 359e11e5dfd27c04b9e366aa6f4bfab5, type: 3}
+      - displayName: CameraManager
+        name: CameraManager, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: CameraManager
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: CameraManager
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 940ebf664ad337749a18aafe37293688, type: 3}
+      - displayName: UnitRagdollSpawner
+        name: UnitRagdollSpawner, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: UnitRagdollSpawner
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: UnitRagdollSpawner
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: a6535d26c459d06459d5a7314f696a7e, type: 3}
+      - displayName: UnitAnimator
+        name: UnitAnimator, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: UnitAnimator
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: UnitAnimator
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 87fc2a99288386a4c97a5ff3fd10628e, type: 3}
+      - displayName: ShootAction
+        name: Actions.ShootAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: ShootAction
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: ShootAction
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: e2e2aa7ccecced949ae4150e462b7a8a, type: 3}
+      - displayName: HealthSystem
+        name: HealthSystem, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: HealthSystem
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: HealthSystem
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 42a51386ed3866b4ab7974b41f569ce5, type: 3}
+      - displayName: LookAtCamera
+        name: LookAtCamera, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+        content:
+          m_Text: LookAtCamera
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: LookAtCamera
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 72edd865553a0114185e21dc2c235304, type: 3}
+      - displayName: UnitWorldUI
+        name: UserInterface.UnitWorldUI, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+        content:
+          m_Text: UnitWorldUI
+          m_Image: {fileID: -8204150473280056172, guid: 0000000000000000d000000000000000, type: 0}
+          m_Tooltip: UnitWorldUI
+        shown: 0
+        isBuiltIn: 0
+        script: {fileID: 11500000, guid: 866b7a1f15c34204e81bb170c7d500ae, type: 3}
     excludedComponents:
       name: Excluded
       components:

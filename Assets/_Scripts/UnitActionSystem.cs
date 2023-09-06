@@ -104,7 +104,7 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
     {
         _selectedUnit = unit;
         
-        SetSelectedAction(unit.GetMoveAction());
+        SetSelectedAction(unit.GetAction<MoveAction>());
         
         OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }

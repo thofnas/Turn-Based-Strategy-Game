@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Actions;
 using Grid;
 using UnityEngine;
@@ -16,18 +17,12 @@ public class Unit : MonoBehaviour
     [SerializeField] private bool _isEnemy;
     private GridPosition _gridPosition;
     private HealthSystem _healthSystem;
-    private MoveAction _moveAction;
-    private SpinAction _spinAction;
-    private ShootAction _shootAction;
     private BaseAction[] _actionsArray;
     private int _actionPoints = ACTION_POINTS_MAX;
 
     private void Awake()
     {
         _healthSystem = GetComponent<HealthSystem>();
-        _moveAction = GetComponent<MoveAction>();
-        _spinAction = GetComponent<SpinAction>();
-        _shootAction = GetComponent<ShootAction>();
         _actionsArray = GetComponents<BaseAction>();
     }
 
@@ -61,12 +56,8 @@ public class Unit : MonoBehaviour
             LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPos, newGridPosition);
         }
     }
-    
-    public MoveAction GetMoveAction() => _moveAction;
 
-    public SpinAction GetSpinAction() => _spinAction;
-    
-    public ShootAction GetShootAction() => _shootAction;
+    public T GetAction<T>() where T : BaseAction => _actionsArray.OfType<T>().FirstOrDefault();
 
     public GridPosition GetGridPosition() => _gridPosition;
 

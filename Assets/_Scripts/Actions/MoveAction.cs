@@ -54,7 +54,7 @@ namespace Actions
         
         public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
         {
-            int targetCount = Unit.GetShootAction().GetTargetCountAtPosition(gridPosition);
+            int targetCount = Unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
             return new EnemyAIAction { EnemyGridPosition = gridPosition, ActionValue = targetCount * 10 };
         }
 
