@@ -14,9 +14,9 @@ public class LevelGrid : Singleton<LevelGrid>
     {
         base.Awake();
         
-        _gridSystem = new GridSystem<GridObject>(20, 20, 2, 
+        _gridSystem = new GridSystem<GridObject>(10, 10, 2, 
             (gridSystem, gridPosition) => new GridObject(gridSystem, gridPosition));
-        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
     }
 
     public void UnitMovedGridPosition(Unit unit, GridPosition from, GridPosition to)
