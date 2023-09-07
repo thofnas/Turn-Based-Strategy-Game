@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Grid;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Actions
 {
@@ -11,13 +10,12 @@ namespace Actions
     {
         public static event EventHandler OnAnyActionStarted;
         public static event EventHandler OnAnyActionCompleted;
-        
+
         protected Unit Unit;
         protected bool IsActive;
 
         [SerializeField, Min(0)] private int _maxDistance;
-        [Header("Visuals")]
-        [SerializeField] private Color _color = Color.white;
+        [Header("Visuals")] [SerializeField] private Color _color = Color.white;
         [SerializeField] private bool _showRange;
         private Action _onActionComplete;
 
@@ -33,22 +31,20 @@ namespace Actions
         public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
 
         protected abstract List<GridPosition> GetGridPositions(bool filterByUnitPresence);
-        
-        public List<GridPosition> GetValidActionGridPositionList() => 
-            GetGridPositions(true);
 
-        public List<GridPosition> GetRangeGridPositionList() => 
-            GetGridPositions(false);
-        
-        public virtual bool IsValidActionGridPosition(GridPosition gridPosition) => 
+        public List<GridPosition> GetValidActionGridPositionList() => GetGridPositions(true);
+
+        public List<GridPosition> GetRangeGridPositionList() => GetGridPositions(false);
+
+        public virtual bool IsValidActionGridPosition(GridPosition gridPosition) =>
             GetValidActionGridPositionList().Contains(gridPosition);
-        
+
         public virtual int GetActionPointsCost() => 1;
 
         public Unit GetUnit() => Unit;
 
         public int GetMaxDistance() => _maxDistance;
-        
+
         public Color GetColorOfVisual() => _color;
 
         public bool HasRangeVisual() => _showRange;
@@ -65,18 +61,17 @@ namespace Actions
             }
 
             if (enemyAIActions.Count <= 0) return null;
-            
-            enemyAIActions.Sort((actionA, actionB) =>
-                actionB.ActionValue - actionA.ActionValue);
+
+            enemyAIActions.Sort((actionA, actionB) => actionB.ActionValue - actionA.ActionValue);
 
             return enemyAIActions.First();
         }
-        
+
         protected void ActionStart(Action onActionComplete)
         {
             IsActive = true;
             _onActionComplete = onActionComplete;
-            
+
             OnAnyActionStarted?.Invoke(this, EventArgs.Empty);
         }
 
@@ -84,7 +79,7 @@ namespace Actions
         {
             IsActive = false;
             _onActionComplete();
-            
+
             OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
         }
     }

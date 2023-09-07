@@ -9,9 +9,9 @@ namespace Actions
     {
         private const float ROTATE_SPEED = 10f;
 
-        public event EventHandler<OnUnitShootEventArgs> OnUnitShoot;
+        public event EventHandler<UnitShootEventArgs> OnUnitShoot;
     
-        public class OnUnitShootEventArgs : EventArgs
+        public class UnitShootEventArgs : EventArgs
         {
             public Unit ShootingUnit;
             public Unit TargetUnit;
@@ -122,7 +122,7 @@ namespace Actions
         {
             _targetUnit.Damage(40, Unit.transform.position);
         
-            OnUnitShoot?.Invoke(this, new OnUnitShootEventArgs {
+            OnUnitShoot?.Invoke(this, new UnitShootEventArgs {
                 ShootingUnit = Unit,
                 TargetUnit = _targetUnit
             });

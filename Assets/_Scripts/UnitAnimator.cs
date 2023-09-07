@@ -31,7 +31,7 @@ public class UnitAnimator : MonoBehaviour
     private void MoveAction_OnUnitStopMoving(object sender, EventArgs e) => 
         _animator.SetBool(IsWalking, false);
     
-    private void ShootAction_OnUnitShoot(object sender, ShootAction.OnUnitShootEventArgs e)
+    private void ShootAction_OnUnitShoot(object sender, ShootAction.UnitShootEventArgs e)
     {
         _animator.SetTrigger(Shoot);
 
