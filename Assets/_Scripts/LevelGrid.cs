@@ -8,15 +8,23 @@ public class LevelGrid : Singleton<LevelGrid>
     public event EventHandler OnAnyUnitChangedGridPosition;
     
     [SerializeField] private Transform _gridDebugObjectPrefab;
+    [SerializeField] private int _width = 10;
+    [SerializeField] private int _height = 10;
+    [SerializeField] private float _cellSize = 2f;
     private GridSystem<GridObject> _gridSystem;
 
     protected override void Awake()
     {
         base.Awake();
         
-        _gridSystem = new GridSystem<GridObject>(10, 10, 2, 
+        _gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, 
             (gridSystem, gridPosition) => new GridObject(gridSystem, gridPosition));
         //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+    }
+
+    private void Start()
+    {
+        Pathfinding.Instance.Setup(_width, _width, _cellSize);
     }
 
     public void UnitMovedGridPosition(Unit unit, GridPosition from, GridPosition to)

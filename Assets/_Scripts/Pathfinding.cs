@@ -9,18 +9,41 @@ public class Pathfinding : Singleton<Pathfinding>
     private const int MOVE_DIAGONAL_CONST = 14;
     
     [SerializeField] private Transform _gridDebugObjectPrefab;
+    [SerializeField] private LayerMask _obstaclesLayerMask;
     private int _width;
     private int _height;
     private float _cellSize;
     private GridSystem<PathNode> _gridSystem;
 
-    protected override void Awake()
+    public void Setup(int width, int height, float cellSize)
     {
-        base.Awake();
+        _width = width;
+        _height = height;
+        _cellSize = cellSize;
         
-        _gridSystem = new GridSystem<PathNode>(10, 10, 2, 
+        _gridSystem = new GridSystem<PathNode>(width, height, cellSize, 
             (_, gridPosition) => new PathNode(gridPosition));
         _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+
+        const float raycastOffsetDistance = 5f;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                GridPosition gridPosition = new(x, z);
+                Vector3 woldPos = LevelGrid.Instance.GetWorldPosition(gridPosition);
+
+                if (Physics.Raycast(
+                        woldPos + Vector3.down * raycastOffsetDistance,
+                        Vector3.up,
+                        raycastOffsetDistance * 2f,
+                        _obstaclesLayerMask))
+                {
+                    GetNode(x, z).SetIsWalkable(false);
+                }
+            }
+        }
     }
 
     public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition)
@@ -66,7 +89,11 @@ public class Pathfinding : Singleton<Pathfinding>
             foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
             {
                 if (closedList.Contains(neighbourNode))
+                    continue;
+
+                if (!neighbourNode.IsWalkable())
                 {
+                    closedList.Add(neighbourNode);
                     continue;
                 }
 
