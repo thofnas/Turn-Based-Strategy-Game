@@ -24,7 +24,7 @@ public class LevelGrid : Singleton<LevelGrid>
 
     private void Start()
     {
-        Pathfinding.Instance.Setup(_width, _width, _cellSize);
+        Pathfinding.Instance.Setup(_width, _height, _cellSize);
     }
 
     public void UnitMovedGridPosition(Unit unit, GridPosition from, GridPosition to)
