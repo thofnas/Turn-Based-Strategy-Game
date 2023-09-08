@@ -23,7 +23,7 @@ public class Pathfinding : Singleton<Pathfinding>
         
         _gridSystem = new GridSystem<PathNode>(width, height, cellSize, 
             (_, gridPosition) => new PathNode(gridPosition));
-        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
 
         const float raycastOffsetDistance = 5f;
 
@@ -46,7 +46,7 @@ public class Pathfinding : Singleton<Pathfinding>
         }
     }
 
-    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition)
+    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength)
     {
         List<PathNode> openList = new();
         List<PathNode> closedList = new();
@@ -79,6 +79,7 @@ public class Pathfinding : Singleton<Pathfinding>
             if (currentNode == endNode)
             {
                 //reached final node
+                pathLength = endNode.GetFCost() / MOVE_STRAIGHT_CONST;
                 return CalculatePath(endNode);
             }
 
@@ -112,9 +113,12 @@ public class Pathfinding : Singleton<Pathfinding>
             }
         }
 
+        pathLength = 0;
         return null;
     }
 
+    public bool IsWalkableGridPosition(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition).IsWalkable();
+    
     private int CalculateDistance(GridPosition gridPositionA, GridPosition gridPositionB)
     {
         GridPosition gridPositionDistance = gridPositionA - gridPositionB;

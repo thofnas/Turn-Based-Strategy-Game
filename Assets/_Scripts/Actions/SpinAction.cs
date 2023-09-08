@@ -10,7 +10,7 @@ namespace Actions
     {
         private readonly float _spinDegrees = 720f;
     
-        public override void DoAction(GridPosition gridPosition, Action onSpinComplete)
+        public override void DoAction(GridPosition targetGridPosition, Action onSpinComplete)
         {
             if (IsActive) return;
             

@@ -16,7 +16,8 @@ namespace Actions
             public Unit ShootingUnit;
             public Unit TargetUnit;
         }
-    
+
+        [SerializeField] private LayerMask _obstaclesLayerMask;
         private readonly float _aimingStateTime = 1.0f;
         private readonly float _shootingStateTime = 0.1f;
         private readonly float _cooloffStateTime = 0.5f;
@@ -49,9 +50,9 @@ namespace Actions
             if (_stateTimer <= 0f) NextState();
         }
 
-        public override void DoAction(GridPosition gridPosition, Action onActionComplete)
+        public override void DoAction(GridPosition targetGridPosition, Action onActionComplete)
         {
-            _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+            _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(targetGridPosition);
             _canShoot = true;
             _state = State.Aiming;
             _stateTimer = _aimingStateTime;
@@ -79,10 +80,11 @@ namespace Actions
         public int GetTargetCountAtPosition(GridPosition gridPosition) => 
             GetGridPositions(true, gridPosition).Count;
 
-        private List<GridPosition> GetGridPositions(bool filterByUnitPresence, GridPosition gridPosition)
+        private List<GridPosition> GetGridPositions(bool filterByUnitPresence, GridPosition unitGridPosition)
         {
+            const float unitShoulderHeight = 1.7f;
             List<GridPosition> validGridPositionList = new();
-            GridPosition unitGridPosition = Unit.GetGridPosition();
+            Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
             int maxDistance = GetMaxDistance();
 
             for (int x = -maxDistance; x <= maxDistance; x++)
@@ -100,15 +102,25 @@ namespace Actions
                     if (Mathf.Round(testDistance) > maxDistance)
                         continue;
 
+                    
                     if (filterByUnitPresence)
                     {
                         if (!LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
                             continue;
-
+                        
                         Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
-
+                        
                         if (targetUnit.IsEnemy() == Unit.IsEnemy())
                             continue;
+                        
+                        if (Physics.Raycast(unitWorldPosition + Vector3.up * unitShoulderHeight, 
+                                (targetUnit.GetWorldPosition() - unitWorldPosition).normalized, 
+                                Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
+                                _obstaclesLayerMask))
+                        {
+                            //blocked by an obstacle
+                            continue;
+                        }
                     }
 
                     validGridPositionList.Add(testGridPosition);
