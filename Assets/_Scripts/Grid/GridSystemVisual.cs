@@ -7,7 +7,7 @@ namespace Grid
 {
     public class GridSystemVisual : Singleton<GridSystemVisual>
     {
-        private const float RANGE_COLOR_ALPHA = 0.35f;
+        private const float RANGE_COLOR_ALPHA = 0.3f;
         
         [SerializeField] private GridSystemVisualSingle _gridSystemVisualSinglePrefab;
         private GridSystemVisualSingle[,] _gridSystemVisualSingleArray;
