@@ -23,12 +23,12 @@ namespace Actions
         {
             Unit = GetComponent<Unit>();
         }
-
-        public abstract string GetActionName();
-
+        
         public abstract void DoAction(GridPosition targetGridPosition, Action onActionComplete);
 
         public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
+
+        public abstract string GetActionName();
 
         protected abstract List<GridPosition> GetGridPositions(bool filterByUnitPresence);
 
