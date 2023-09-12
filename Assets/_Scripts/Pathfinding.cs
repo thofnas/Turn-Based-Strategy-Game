@@ -119,6 +119,8 @@ public class Pathfinding : Singleton<Pathfinding>
 
     public bool IsWalkableGridPosition(GridPosition gridPosition) => _gridSystem.GetGridObject(gridPosition).IsWalkable();
     
+    public void SetWalkableGridPosition(GridPosition gridPosition, bool isWalkable) => _gridSystem.GetGridObject(gridPosition).SetIsWalkable(isWalkable);
+    
     private int CalculateDistance(GridPosition gridPositionA, GridPosition gridPositionB)
     {
         GridPosition gridPositionDistance = gridPositionA - gridPositionB;
