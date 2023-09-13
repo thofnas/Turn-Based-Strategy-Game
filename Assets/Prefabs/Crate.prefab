@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 41680dad0f0243748b4e228f49a2e3c4, type: 2}
+  - {fileID: 2100000, guid: dcc9a0b939c99774089653966acc8d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,3 +150,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2445e4b14594ff843bad9544b74e9196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _destructibleCratePrefab: {fileID: 2928451657079316513, guid: 5e5965bc193e89841b2453752300d488, type: 3}
