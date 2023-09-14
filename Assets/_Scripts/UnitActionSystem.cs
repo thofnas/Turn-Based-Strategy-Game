@@ -62,7 +62,7 @@ public class UnitActionSystem : Singleton<UnitActionSystem>
         if (!_selectedUnit.TrySpendActionPoints(_selectedAction)) return;
         
         SetBusy();
-        _selectedAction.DoAction(mouseGridPosition, UnsetBusy);
+        _selectedAction.TakeAction(mouseGridPosition, UnsetBusy);
         OnActionStarted?.Invoke(this, EventArgs.Empty);
     }
 

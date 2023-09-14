@@ -24,7 +24,7 @@ namespace Actions
             Unit = GetComponent<Unit>();
         }
         
-        public abstract void DoAction(GridPosition targetGridPosition, Action onActionComplete);
+        public abstract void TakeAction(GridPosition targetGridPosition, Action onActionComplete);
 
         public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
 

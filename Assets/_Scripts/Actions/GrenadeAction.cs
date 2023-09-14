@@ -16,7 +16,7 @@ namespace Actions
             
         }
 
-        public override void DoAction(GridPosition targetGridPosition, Action onActionComplete)
+        public override void TakeAction(GridPosition targetGridPosition, Action onActionComplete)
         {
             GrenadeProjectile grenadeProjectile = Instantiate(_grenadeProjectilePrefab, Unit.GetWorldPosition(), Quaternion.identity);
             
@@ -38,10 +38,8 @@ namespace Actions
 
         protected override List<GridPosition> GetGridPositions(bool _)
         {
-            const float unitShoulderHeight = 1.7f;
             GridPosition unitGridPosition = Unit.GetGridPosition();
             List<GridPosition> validGridPositionList = new();
-            Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
             int maxDistance = GetMaxDistance();
 
             for (int x = -maxDistance; x <= maxDistance; x++)

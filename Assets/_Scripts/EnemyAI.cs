@@ -87,7 +87,7 @@ public class EnemyAI : MonoBehaviour
 
         if (bestEnemyAIAction == null || !enemyUnit.TrySpendActionPoints(bestAction)) return false;
         
-        bestAction.DoAction(bestEnemyAIAction.EnemyGridPosition, onEnemyAIActionComplete);
+        bestAction.TakeAction(bestEnemyAIAction.EnemyGridPosition, onEnemyAIActionComplete);
         return true;
     }
 

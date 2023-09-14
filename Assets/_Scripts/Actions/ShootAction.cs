@@ -51,7 +51,7 @@ namespace Actions
             if (_stateTimer <= 0f) NextState();
         }
 
-        public override void DoAction(GridPosition targetGridPosition, Action onActionComplete)
+        public override void TakeAction(GridPosition targetGridPosition, Action onActionComplete)
         {
             _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(targetGridPosition);
             _canShoot = true;
